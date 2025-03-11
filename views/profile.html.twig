@@ -1,0 +1,114 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Profil - {{ user.pseudo }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- En-tête du profil -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-user-circle fa-5x text-primary"></i>
+                    </div>
+                    <h1 class="display-4 mb-3">{{ user.pseudo }}</h1>
+                    <p class="text-muted mb-4">{{ user.email }}</p>
+                    <div class="d-flex justify-content-center gap-4">
+                        <div class="text-center">
+                            <h3 class="mb-0">{{ eventsCreated|length }}</h3>
+                            <small class="text-muted">Événements créés</small>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="mb-0">{{ eventsParticipating|length }}</h3>
+                            <small class="text-muted">Participations</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Événements créés -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h2 class="mb-4">
+                <i class="fas fa-calendar-plus me-2"></i>
+                Mes événements créés
+            </h2>
+            {% if eventsCreated|length > 0 %}
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for event in eventsCreated %}
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm event-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ event.title }}</h5>
+                                    <p class="card-text text-muted">{{ event.description|slice(0, 100) }}...</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ event.date_event|date("d/m/Y") }}
+                                            <i class="fas fa-clock ms-2 me-1"></i>
+                                            {{ event.time_event|date("H:i") }}
+                                        </small>
+                                        <a href="/sporteventultimate/event/{{ event.id }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye me-1"></i>Voir
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Vous n'avez pas encore créé d'événements.
+                    <a href="/sporteventultimate/event/create" class="alert-link">Créer mon premier événement</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Événements participés -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">
+                <i class="fas fa-calendar-check me-2"></i>
+                Mes participations
+            </h2>
+            {% if eventsParticipating|length > 0 %}
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for event in eventsParticipating %}
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm event-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ event.title }}</h5>
+                                    <p class="card-text text-muted">{{ event.description|slice(0, 100) }}...</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ event.date_event|date("d/m/Y") }}
+                                            <i class="fas fa-clock ms-2 me-1"></i>
+                                            {{ event.time_event|date("H:i") }}
+                                        </small>
+                                        <a href="/sporteventultimate/event/{{ event.id }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye me-1"></i>Voir
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Vous ne participez à aucun événement pour le moment.
+                    <a href="/sporteventultimate/home" class="alert-link">Découvrir les événements</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

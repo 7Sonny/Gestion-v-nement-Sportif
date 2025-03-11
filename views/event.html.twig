@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="event-card shadow-lg p-5 bg-white rounded">
+        <h2 class="text-primary text-center fw-bold mb-4">📅 Créer un événement</h2>
+        <p class="text-muted text-center mb-4">Remplissez les détails pour organiser un nouvel événement.</p>
+
+        <form method="POST" action="/sporteventultimate/event/create">
+            <div class="mb-4">
+                <label for="title" class="form-label fw-semibold">Titre de l'événement</label>
+                <input type="text" id="title" name="title" class="form-control input-lg" placeholder="Ex: Tournoi de football" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="description" class="form-label fw-semibold">Description</label>
+                <textarea id="description" name="description" class="form-control input-lg" rows="4" placeholder="Décrivez votre événement" required></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label for="date_event" class="form-label fw-semibold">📆 Date</label>
+                    <input type="date" id="date_event" name="date_event" class="form-control input-lg" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label for="time_event" class="form-label fw-semibold">⏰ Heure</label>
+                    <input type="time" name="time_event" id="time_event" class="form-control input-lg" required>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="location" class="form-label fw-semibold">📍 Lieu</label>
+                <input type="text" id="location" name="location" class="form-control input-lg" placeholder="Ex: Stade de Paris" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-3 mt-3">🚀 Créer l'événement</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

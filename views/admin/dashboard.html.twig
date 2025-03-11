@@ -1,0 +1,397 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Sport Event{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- Onglets -->
+            <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab">
+                        <i class="fas fa-calendar-alt me-2"></i>Événements
+                        <span class="badge bg-danger ms-2">{{ events|length }}</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab">
+                        <i class="fas fa-comments me-2"></i>Commentaires
+                        <span class="badge bg-info ms-2">{{ comments|length }}</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants" type="button" role="tab">
+                        <i class="fas fa-users me-2"></i>Participants
+                        <span class="badge bg-success ms-2">{{ inscriptions|length }}</span>
+                    </button>
+                </li>
+            </ul>
+
+            {% if success_message %}
+                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    {{ success_message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
+            <!-- Contenu des onglets -->
+            <div class="tab-content" id="adminTabsContent">
+                <!-- Onglet Événements -->
+                <div class="tab-pane fade show active" id="events" role="tabpanel">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Titre</th>
+                                            <th>Date</th>
+                                            <th>Heure</th>
+                                            <th>Lieu</th>
+                                            <th class="text-center">Participants</th>
+                                            <th class="text-center">Commentaires</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for event in events %}
+                                        <tr>
+                                            <td>
+                                                <span class="fw-medium">{{ event.title }}</span>
+                                                <div class="text-muted small">
+                                                    <i class="fas fa-user me-1"></i>{{ event.creator_name }}
+                                                </div>
+                                            </td>
+                                            <td>{{ event.date_event|date('d/m/Y') }}</td>
+                                            <td>{{ event.time_event|date('H:i') }}</td>
+                                            <td>{{ event.location }}</td>
+                                            <td class="text-center">
+                                                <span class="badge bg-primary rounded-pill">
+                                                    <i class="fas fa-users me-1"></i>{{ event.participant_count }}
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-info rounded-pill">
+                                                    <i class="fas fa-comments me-1"></i>{{ event.comment_count }}
+                                                </span>
+                                            </td>
+                                            <td class="text-end">
+                                                <div class="btn-group">
+                                                    <a href="/sporteventultimate/admin/edit-event/{{ event.id }}" 
+                                                       class="btn btn-warning btn-sm rounded-3 me-2">
+                                                        <i class="fas fa-edit me-2"></i>Modifier
+                                                    </a>
+                                                    <button class="btn btn-outline-danger btn-sm rounded-3" 
+                                                            onclick="deleteEvent({{ event.id }})">
+                                                        <i class="fas fa-trash-alt me-2"></i>Supprimer
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4">
+                                                <div class="text-muted">
+                                                    <i class="fas fa-info-circle me-2"></i>
+                                                    Aucun événement à afficher
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Onglet Commentaires -->
+                <div class="tab-pane fade" id="comments" role="tabpanel">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Événement</th>
+                                            <th>Utilisateur</th>
+                                            <th>Commentaire</th>
+                                            <th>Date</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for comment in comments %}
+                                        <tr>
+                                            <td>
+                                                <span class="fw-medium">{{ comment.event_title }}</span>
+                                            </td>
+                                            <td>{{ comment.user_name }}</td>
+                                            <td>{{ comment.content }}</td>
+                                            <td>{{ comment.created_at|date('d/m/Y H:i') }}</td>
+                                            <td class="text-end">
+                                                <button class="btn btn-outline-danger btn-sm rounded-3" 
+                                                        onclick="deleteComment({{ comment.id }})">
+                                                    <i class="fas fa-trash-alt me-2"></i>Supprimer
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4">
+                                                <div class="text-muted">
+                                                    <i class="fas fa-info-circle me-2"></i>
+                                                    Aucun commentaire à afficher
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Onglet Participants -->
+                <div class="tab-pane fade" id="participants" role="tabpanel">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Événement</th>
+                                            <th>Participant</th>
+                                            <th>Date d'inscription</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for inscription in inscriptions %}
+                                        <tr>
+                                            <td>
+                                                <span class="fw-medium">{{ inscription.event_title }}</span>
+                                                <div class="text-muted small">
+                                                    {{ inscription.event_date|date('d/m/Y H:i') }}
+                                                </div>
+                                            </td>
+                                            <td>{{ inscription.user_name }}</td>
+                                            <td>{{ inscription.created_at|date('d/m/Y H:i') }}</td>
+                                            <td class="text-end">
+                                                <button class="btn btn-outline-danger btn-sm rounded-3" 
+                                                        onclick="removeParticipant({{ inscription.id }})">
+                                                    <i class="fas fa-user-minus me-2"></i>Retirer
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4">
+                                                <div class="text-muted">
+                                                    <i class="fas fa-info-circle me-2"></i>
+                                                    Aucun participant à afficher
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmAction(message) {
+    return confirm(message);
+}
+
+async function deleteEvent(eventId) {
+    if (!confirmAction('Êtes-vous sûr de vouloir supprimer cet événement ? Cette action est irréversible.')) return;
+    
+    try {
+        const response = await fetch('/sporteventultimate/admin/delete-event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `event_id=${eventId}`
+        });
+        
+        const data = await response.json();
+        handleResponse(data, 'événement');
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+async function deleteComment(commentId) {
+    if (!confirmAction('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) return;
+    
+    try {
+        const response = await fetch('/sporteventultimate/admin/delete-comment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `comment_id=${commentId}`
+        });
+        
+        const data = await response.json();
+        handleResponse(data, 'commentaire');
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+async function removeParticipant(inscriptionId) {
+    if (!confirmAction('Êtes-vous sûr de vouloir retirer ce participant ?')) return;
+    
+    try {
+        const response = await fetch('/sporteventultimate/admin/remove-participant', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `inscription_id=${inscriptionId}`
+        });
+        
+        const data = await response.json();
+        handleResponse(data, 'participant');
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+function handleResponse(data, type) {
+    if (data.success) {
+        location.reload();
+    } else {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+        errorDiv.innerHTML = `
+            <i class="fas fa-exclamation-circle me-2"></i>
+            ${data.message || `Une erreur est survenue lors de la suppression du ${type}`}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.querySelector('.container-fluid').insertBefore(errorDiv, document.querySelector('.nav-tabs'));
+    }
+}
+
+function handleError(error) {
+    console.error('Erreur:', error);
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+    errorDiv.innerHTML = `
+        <i class="fas fa-exclamation-circle me-2"></i>
+        Une erreur est survenue lors de la communication avec le serveur
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    document.querySelector('.container-fluid').insertBefore(errorDiv, document.querySelector('.nav-tabs'));
+}
+</script>
+
+<style>
+.btn-group .btn {
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-warning {
+    color: #000;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.btn-warning:hover {
+    color: #000;
+    background-color: #ffca2c;
+    border-color: #ffc720;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.table td {
+    padding: 1rem 0.75rem;
+}
+
+.alert {
+    border-radius: 0.5rem;
+}
+
+.alert-success {
+    border-left: 4px solid #198754;
+}
+
+.alert-danger {
+    border-left: 4px solid #dc3545;
+}
+
+.badge {
+    font-size: 0.875rem;
+    padding: 0.5em 0.75em;
+}
+
+.badge.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.badge.bg-info {
+    background-color: #0dcaf0 !important;
+    color: #000;
+}
+
+.text-muted {
+    font-size: 0.875rem;
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #495057;
+    border-color: transparent;
+    background-color: rgba(0,0,0,0.05);
+}
+
+.nav-tabs .nav-link.active {
+    color: #0d6efd;
+    background-color: transparent;
+    border-bottom: 3px solid #0d6efd;
+}
+
+.nav-tabs .badge {
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover .badge {
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}

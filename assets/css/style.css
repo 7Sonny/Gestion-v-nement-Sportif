@@ -1,0 +1,202 @@
+/* 🌟 STYLE GLOBAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 🔹 NAVBAR */
+.navbar {
+    background: white;
+    padding: 15px 30px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.navbar .nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar .nav-link:hover {
+    color: #0056b3;
+}
+
+/* 📦 CONTAINERS PRINCIPAUX */
+.container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* 🎨 FORMULAIRE GÉNÉRAL */
+.form-container {
+    max-width: 500px;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    transition: 0.3s ease-in-out;
+}
+
+.form-container:hover {
+    transform: translateY(-5px);
+}
+
+.form-container h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.input-field {
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input-field:focus {
+    border-color: #007bff;
+    box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.2);
+}
+
+/* 🎯 BOUTONS */
+.btn-primary {
+    background: #007bff;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+/* 🎉 PAGE HOME */
+.hero {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* 📅 SECTION ÉVÉNEMENTS */
+.event-section {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.event-section h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.event-section p {
+    color: #777;
+    font-size: 1rem;
+}
+
+/* 📍 FORMULAIRE CRÉATION ÉVÉNEMENT */
+.event-form {
+    max-width: 600px;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    transition: 0.3s ease-in-out;
+}
+
+.event-form:hover {
+    transform: translateY(-5px);
+}
+
+.event-form label {
+    font-weight: bold;
+}
+
+.event-form .row .col-md-6 {
+    padding-right: 10px;
+}
+
+.event-form button {
+    width: 100%;
+}
+
+/* 🦶 FOOTER */
+.footer {
+    text-align: center;
+    padding: 15px;
+    background: #fff;
+    margin-top: auto;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer p {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.event-card {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.comments-section {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.comment-item {
+    background: #f8f9fa;
+    border-left: 4px solid #007bff;
+}
+
+

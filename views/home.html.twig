@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary mb-3">Bienvenue sur Sport Event</h1>
+        <p class="lead text-muted mb-4">Découvrez et participez aux événements sportifs près de chez vous</p>
+        {% if not session.user_id %}
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/sporteventultimate/inscription" class="btn btn-primary btn-lg rounded-pill px-5">
+                    <i class="fas fa-user-plus me-2"></i>S'inscrire
+                </a>
+                <a href="/sporteventultimate/connexion" class="btn btn-outline-primary btn-lg rounded-pill px-5">
+                    <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Search Section -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <form action="/sporteventultimate/home" method="GET" class="mb-4">
+                <div class="input-group input-group-lg">
+                    <input type="text" 
+                           name="search" 
+                           class="form-control rounded-pill-start" 
+                           placeholder="Rechercher un événement..."
+                           value="{{ searchTerm }}"
+                           aria-label="Rechercher un événement">
+                    <button type="submit" class="btn btn-primary rounded-pill-end px-4">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            {% if searchTerm %}
+                <div class="text-center mb-4">
+                    <p class="text-muted mb-2">
+                        {% if events|length > 0 %}
+                            {{ events|length }} résultat(s) trouvé(s) pour "{{ searchTerm }}"
+                        {% else %}
+                            Aucun résultat trouvé pour "{{ searchTerm }}"
+                        {% endif %}
+                    </p>
+                    <a href="/sporteventultimate/home" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-times me-1"></i>Effacer la recherche
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="row g-4">
+        {% if events %}
+            {% for event in events %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 event-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-primary rounded-pill px-3">
+                                    <i class="fas fa-calendar-alt me-1"></i>{{ event.date_event }}
+                                </span>
+                                <span class="badge bg-success rounded-pill px-3">
+                                    <i class="fas fa-clock me-1"></i>{{ event.time_event }}
+                                </span>
+                            </div>
+                            <h5 class="card-title fw-bold mb-3">{{ event.title }}</h5>
+                            <p class="card-text text-muted mb-3">{{ event.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary">
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}
+                                </span>
+                                <a href="/sporteventultimate/event/{{ event.id }}" class="btn btn-outline-primary rounded-pill">
+                                    <i class="fas fa-info-circle me-1"></i>Détails
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+                <h3 class="text-muted">Aucun événement disponible</h3>
+                <p class="text-muted">Revenez plus tard ou créez votre propre événement !</p>
+                {% if session.user_id %}
+                    <a href="/sporteventultimate/event/create" class="btn btn-primary rounded-pill px-4">
+                        <i class="fas fa-plus me-2"></i>Créer un événement
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="bg-light py-5 mt-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-calendar-plus fa-3x text-primary mb-3"></i>
+                    <h3 class="h5 fw-bold">Créez des événements</h3>
+                    <p class="text-muted">Organisez facilement vos événements sportifs et partagez-les avec la communauté</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-users fa-3x text-success mb-3"></i>
+                    <h3 class="h5 fw-bold">Rejoignez des événements</h3>
+                    <p class="text-muted">Participez aux événements qui vous intéressent et rencontrez d'autres sportifs</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-comments fa-3x text-info mb-3"></i>
+                    <h3 class="h5 fw-bold">Interagissez</h3>
+                    <p class="text-muted">Commentez, likez et partagez vos expériences avec les autres participants</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

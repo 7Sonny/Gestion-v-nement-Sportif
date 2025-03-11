@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-5 shadow-lg border-0 rounded-4 animated fadeIn">
+        <h2 class="text-center text-primary fw-bold mb-4">Connexion</h2>
+
+        <form method="POST" action="/sporteventultimate/connexion">
+            <div class="mb-3">
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <input type="email" name="email" id="email" class="form-control p-2 shadow-sm" placeholder="Ex: johndoe@email.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label fw-semibold">Mot de passe</label>
+                <input type="password" name="password" id="password" class="form-control p-2 shadow-sm" placeholder="******" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow">🔓 Se connecter</button>
+        </form>
+
+        <p class="text-center mt-3">Pas encore de compte ? <a href="/sporteventultimate/inscription" class="text-primary fw-semibold">Inscrivez-vous ici</a></p>
+    </div>
+</div>
+{% endblock %}

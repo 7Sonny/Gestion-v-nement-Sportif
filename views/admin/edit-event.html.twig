@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'événement - Administration{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-edit me-2"></i>Modifier l'événement
+                    </h2>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+
+                    {% if success_message %}
+                        <div class="alert alert-success">{{ success_message }}</div>
+                    {% endif %}
+
+                    <form method="POST" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Titre</label>
+                            <input type="text" class="form-control" id="title" name="title" value="{{ event.title }}" required>
+                            <div class="invalid-feedback">Le titre est requis</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required>{{ event.description }}</textarea>
+                            <div class="invalid-feedback">La description est requise</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="date" name="date" value="{{ event.date_event|date('Y-m-d') }}" required>
+                                <div class="invalid-feedback">La date est requise</div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="time" class="form-label">Heure</label>
+                                <input type="time" class="form-control" id="time" name="time" value="{{ event.time_event|date('H:i') }}" required>
+                                <div class="invalid-feedback">L'heure est requise</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Lieu</label>
+                            <input type="text" class="form-control" id="location" name="location" value="{{ event.location }}" required>
+                            <div class="invalid-feedback">Le lieu est requis</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="/sporteventultimate/admin" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Retour
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-save me-1"></i>Enregistrer les modifications
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if event.participant_count > 0 %}
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-info-circle me-2"></i>
+                Cet événement a actuellement {{ event.participant_count }} participant(s) inscrit(s).
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Validation des formulaires Bootstrap
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %}
