@@ -43,25 +43,16 @@ class EventModel {
         string $description,
         string $date,
         string $time,
-        string $location,
-        ?int $user_id = null
+        string $location
     ): bool {
         try {
-            $this->db->beginTransaction();
-
             $sql = "UPDATE events SET 
                     title = :title,
                     description = :description,
                     date_event = :date,
                     time_event = :time,
-                    location = :location,
-                    updated_at = NOW()
+                    location = :location
                     WHERE id = :id";
-
-            // Ajouter la condition user_id si nécessaire
-            if ($user_id !== null) {
-                $sql .= " AND user_id = :user_id";
-            }
 
             $stmt = $this->db->prepare($sql);
 
@@ -74,22 +65,9 @@ class EventModel {
                 ':location' => $location
             ];
 
-            if ($user_id !== null) {
-                $params[':user_id'] = $user_id;
-            }
-
-            $success = $stmt->execute($params);
-
-            if ($success) {
-                $this->db->commit();
-                return true;
-            }
-
-            $this->db->rollBack();
-            return false;
+            return $stmt->execute($params);
 
         } catch (PDOException $e) {
-            $this->db->rollBack();
             throw new \Exception("Erreur lors de la mise à jour de l'événement : " . $e->getMessage());
         }
     }

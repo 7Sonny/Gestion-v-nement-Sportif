@@ -144,6 +144,74 @@ class AdminController extends Controller {
         }
     }
 
+    public function editEvent($event_id = null) {
+        $this->requireAdmin();
+
+        if (!$event_id) {
+            $_SESSION['error_message'] = "ID d'événement manquant";
+            header('Location: /sporteventultimate/admin');
+            exit;
+        }
+
+        try {
+            $event = $this->eventModel->getEventById($event_id);
+            
+            if (!$event) {
+                $_SESSION['error_message'] = "Événement non trouvé";
+                header('Location: /sporteventultimate/admin');
+                exit;
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+                $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+                $date_event = filter_input(INPUT_POST, 'date_event', FILTER_SANITIZE_STRING);
+                $time_event = filter_input(INPUT_POST, 'time_event', FILTER_SANITIZE_STRING);
+                $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
+
+                if (!$title || !$description || !$date_event || !$time_event || !$location) {
+                    $_SESSION['error'] = "Tous les champs sont obligatoires";
+                    header('Location: /sporteventultimate/admin/edit-event/' . $event_id);
+                    exit;
+                }
+
+                try {
+                    if ($this->eventModel->updateEvent(
+                        $event_id,
+                        $title,
+                        $description,
+                        $date_event,
+                        $time_event,
+                        $location
+                    )) {
+                        $_SESSION['success_message'] = "L'événement a été modifié avec succès";
+                        header('Location: /sporteventultimate/admin');
+                        exit;
+                    } else {
+                        throw new \Exception("Erreur lors de la modification de l'événement");
+                    }
+                } catch (\Exception $e) {
+                    $_SESSION['error'] = $e->getMessage();
+                    header('Location: /sporteventultimate/admin/edit-event/' . $event_id);
+                    exit;
+                }
+            }
+
+            $this->render('admin/edit-event.html.twig', [
+                'event' => $event,
+                'error' => $_SESSION['error'] ?? null,
+                'success_message' => $_SESSION['success_message'] ?? null
+            ]);
+            unset($_SESSION['error'], $_SESSION['success_message']);
+
+        } catch (\Exception $e) {
+            error_log("Erreur lors de la modification de l'événement : " . $e->getMessage());
+            $_SESSION['error_message'] = "Une erreur est survenue : " . $e->getMessage();
+            header('Location: /sporteventultimate/admin');
+            exit;
+        }
+    }
+
     protected function sendJsonResponse($data) {
         header('Content-Type: application/json');
         echo json_encode($data);

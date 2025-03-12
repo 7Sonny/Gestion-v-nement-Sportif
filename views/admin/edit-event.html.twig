@@ -14,11 +14,15 @@
                 </div>
                 <div class="card-body">
                     {% if error %}
-                        <div class="alert alert-danger">{{ error }}</div>
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                        </div>
                     {% endif %}
 
                     {% if success_message %}
-                        <div class="alert alert-success">{{ success_message }}</div>
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>{{ success_message }}
+                        </div>
                     {% endif %}
 
                     <form method="POST" class="needs-validation" novalidate>
@@ -36,14 +40,14 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" id="date" name="date" value="{{ event.date_event|date('Y-m-d') }}" required>
+                                <label for="date_event" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="date_event" name="date_event" value="{{ event.date_event }}" required>
                                 <div class="invalid-feedback">La date est requise</div>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="time" class="form-label">Heure</label>
-                                <input type="time" class="form-control" id="time" name="time" value="{{ event.time_event|date('H:i') }}" required>
+                                <label for="time_event" class="form-label">Heure</label>
+                                <input type="time" class="form-control" id="time_event" name="time_event" value="{{ event.time_event }}" required>
                                 <div class="invalid-feedback">L'heure est requise</div>
                             </div>
                         </div>
