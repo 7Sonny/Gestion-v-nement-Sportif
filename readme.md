@@ -1,73 +1,62 @@
+# Gestion d'Événements Sportifs
 
+Une application web moderne pour la gestion et l'organisation d'événements sportifs, offrant une expérience utilisateur fluide et intuitive.
 
+## Fonctionnalités
 
+- Gestion des événements sportifs
+- Système d'inscription aux événements
+- Espace administrateur
+- Système de commentaires
+- Interface utilisateur moderne et responsive
 
-LightMVC - Framework PHP Minimaliste
+## Prérequis
 
-LightMVC est une base de code simple pour développer des applications web en PHP en suivant l'architecture MVC (Modèle-Vue-Contrôleur). Ce projet fournit une structure minimale pour organiser votre code et démarrer rapidement un projet.
+- PHP 7.4 ou supérieur
+- MySQL 5.7 ou supérieur
+- XAMPP
+- Composer
 
-Prérequis
+## Installation
 
-PHP 8.2 ou supérieur
+1. Clonez le repository :
+```bash
+git clone https://github.com/votre-utilisateur/sporteventultimate.git
+cd sporteventultimate
+```
 
-Serveur web Apache avec le module mod_rewrite activé
+2. Installez les dépendances avec Composer :
+```bash
+composer install
+```
 
-Composer (optionnel pour la gestion des dépendances)
+3. Configurez votre base de données :
+- Importez le fichier `database/base.sql` dans votre serveur MySQL
+- Configurez vos identifiants de base de données
 
-Installation
+## Design
 
-Clonez ce dépôt :
+L'application utilise un design moderne avec :
+- Interface utilisateur intuitive
+- Composants Bootstrap personnalisés
+- Effets d'interaction fluides
+- Design responsive
 
-git clone https://github.com/votre-utilisateur/lightmvc.git
+## Structure du Projet
 
-Placez le projet dans votre serveur web.
+```
+sporteventultimate/
+├── controllers/      # Contrôleurs de l'application
+├── models/          # Modèles de données
+├── views/           # Vues et templates
+├── database/        # Scripts SQL
+└── public/          # Assets publics
+```
 
-Assurez-vous que le fichier .htaccess est correctement configuré.
+## Contribution
 
-Accédez au projet via votre navigateur.
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou soumettre une pull request.
 
-Configuration du fichier .htaccess
-
-Créez un fichier .htaccess à la racine du projet et ajoutez le contenu suivant :
-
-RewriteEngine On
-RewriteBase /lightmvc/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
-
-Si votre projet est placé à la racine du serveur, remplacez /lightmvc/ par /.
-
-Structure du projet
-
-/lightmvc/
-│-- app/
-│   │-- controllers/
-│   │-- models/
-│   │-- views/
-│-- public/
-│   │-- css/
-│   │-- js/
-│-- index.php
-│-- .htaccess
-│-- README.md
-
-app/ : Contient le code MVC (contrôleurs, modèles et vues)
-
-public/ : Contient les ressources statiques (CSS, JS)
-
-index.php : Point d'entrée principal de l'application
-
-.htaccess : Configuration des URL pour Apache
-
-Démarrage
-
-Démarrez votre serveur Apache.
-
-Accédez à http://localhost/lightmvc/ dans votre navigateur.
-
-Licence
+## License
 
 Ce projet est sous licence MIT. Vous êtes libre de l'utiliser et de le modifier selon vos besoins.
-
-
