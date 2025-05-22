@@ -59,8 +59,8 @@
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="/sporteventultimate/admin" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left me-1"></i>Retour
+                            <a href="/admin" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Retour
                             </a>
                             <button type="submit" class="btn btn-danger">
                                 <i class="fas fa-save me-1"></i>Enregistrer les modifications
@@ -79,4 +79,21 @@
         </div>
     </div>
 </div>
+
+<script>
+// Validation des formulaires Bootstrap
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
 {% endblock %}

@@ -34,7 +34,7 @@ $adminController = new AdminController($db);
 
 // Initialisation du routeur
 $router = new AltoRouter();
-$router->setBasePath('/sporteventultimate');
+$router->setBasePath('');
 
 // Route pour la page de présentation (page d'accueil)
 $router->map('GET', '/', function () use ($homeController) {
@@ -125,7 +125,7 @@ $router->map('GET', '/admin', function () use ($adminController) {
         $adminController->index();
     } catch (Exception $e) {
         $_SESSION['error_message'] = "Une erreur est survenue : " . $e->getMessage();
-        header('Location: /sporteventultimate/home');
+        header('Location: /home');
         exit;
     }
 }, 'admin_dashboard');
@@ -151,7 +151,7 @@ $router->map('POST', '/admin/delete-comment', function () use ($adminController)
             echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         } else {
             $_SESSION['error_message'] = "Une erreur est survenue : " . $e->getMessage();
-            header('Location: /sporteventultimate/admin');
+            header('Location: /admin');
         }
         exit;
     }
@@ -166,7 +166,7 @@ $router->map('POST', '/admin/remove-participant', function () use ($adminControl
             echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         } else {
             $_SESSION['error_message'] = "Une erreur est survenue : " . $e->getMessage();
-            header('Location: /sporteventultimate/admin');
+            header('Location: /admin');
         }
         exit;
     }

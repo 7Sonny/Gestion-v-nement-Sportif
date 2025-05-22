@@ -6,13 +6,12 @@ use PDOException;
 
 class Database {
     private static ?PDO $instance = null;
-    private static string $host = '127.0.0.1';
+    private static string $host = 'localhost';
     private static string $port = '3306';
-    private static string $dbname = 'sportevent';
+    private static string $dbname = 'sonny_db1';
     private static string $charset = 'utf8';
-    private static string $pseudo = 'root';
-    private static string $password = '';
-
+    private static string $pseudo = 'sonny_db1';
+    private static string $password = 'Sonnyambre06!';  
     private function __construct() {}
 
     public static function getInstance(): PDO {

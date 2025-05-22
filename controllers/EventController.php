@@ -40,7 +40,7 @@ class EventController extends Controller
             $success = $eventModel->createEvent($title, $description, $date_event, $time_event, $location, $user_id);
     
             if ($success) {
-                header("Location: /sporteventultimate/home");
+                header("Location: /home");
                 exit;
             } else {
                 die("Erreur lors de la création de l'événement.");
@@ -182,4 +182,7 @@ class EventController extends Controller
             die("Aucun événement trouvé.");
         }
     }
+
+
 }
+

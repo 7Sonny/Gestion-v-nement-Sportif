@@ -14,7 +14,7 @@ class UserController extends Controller {
 
     public function profile() {
         if (!isset($_SESSION['user_id'])) {
-            header('Location: /sporteventultimate/connexion');
+            header('Location: /connexion');
             exit;
         }
 
@@ -45,7 +45,7 @@ class UserController extends Controller {
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                     if ($this->userModel->register($pseudo, $email, $hashedPassword)) {
                         $_SESSION['success_message'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
-                        header('Location: /sporteventultimate/connexion');
+                        header('Location: /connexion');
                         exit;
                     } else {
                         $_SESSION['error_message'] = "Erreur lors de l'inscription.";
@@ -86,7 +86,7 @@ class UserController extends Controller {
                         'role' => $user->role
                     ];
                     $_SESSION['success_message'] = "Connexion réussie !";
-                    header('Location: /sporteventultimate/home');
+                    header('Location: /home');
                     exit;
                 } else {
                     $_SESSION['error_message'] = "Email ou mot de passe incorrect.";
@@ -106,7 +106,7 @@ class UserController extends Controller {
 
     public function logout() {
         session_destroy();
-        header('Location: /sporteventultimate/presentation');
+        header('Location: /presentation');
         exit;
     }
 

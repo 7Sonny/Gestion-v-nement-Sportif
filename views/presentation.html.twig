@@ -13,10 +13,10 @@
                         <h1 class="display-4 fw-bold mb-4 text-shadow">Bienvenue sur Sport Event</h1>
                         <p class="lead mb-4 text-shadow-sm">Rejoignez notre communauté dynamique et participez à des événements sportifs passionnants près de chez vous.</p>
                         <div class="d-flex gap-3 button-group">
-                            <a href="/sporteventultimate/inscription" class="btn btn-light btn-lg scale-hover">
+                            <a href="/inscription" class="btn btn-light btn-lg scale-hover">
                                 <i class="fas fa-user-plus me-2"></i>S'inscrire gratuitement
                             </a>
-                            <a href="/sporteventultimate/connexion" class="btn btn-outline-light btn-lg scale-hover">
+                            <a href="/connexion" class="btn btn-outline-light btn-lg scale-hover">
                                 <i class="fas fa-sign-in-alt me-2"></i>Se connecter
                             </a>
                         </div>
@@ -24,10 +24,10 @@
                         <h1 class="display-4 fw-bold mb-4 text-shadow">Bonjour !</h1>
                         <p class="lead mb-4 text-shadow-sm">Prêt pour de nouvelles aventures sportives ?</p>
                         <div class="d-flex gap-3 button-group">
-                            <a href="/sporteventultimate/event/create" class="btn btn-light btn-lg scale-hover">
+                            <a href="/event/create" class="btn btn-light btn-lg scale-hover">
                                 <i class="fas fa-calendar-plus me-2"></i>Créer un événement
                             </a>
-                            <a href="/sporteventultimate/profile" class="btn btn-outline-light btn-lg scale-hover">
+                            <a href="/profile" class="btn btn-outline-light btn-lg scale-hover">
                                 <i class="fas fa-user me-2"></i>Mon profil
                             </a>
                         </div>
@@ -88,7 +88,7 @@
             <h2 class="text-center mb-5 section-title">Mes Actions Rapides</h2>
             <div class="row g-4">
                 <div class="col-md-3 fade-in" style="animation-delay: 0.2s">
-                    <a href="/sporteventultimate/event/create" class="text-decoration-none">
+                    <a href="/event/create" class="text-decoration-none">
                         <div class="quick-action-card card border-0 shadow-sm h-100">
                             <div class="card-body text-center p-4">
                                 <div class="icon-circle bg-primary">
@@ -100,7 +100,7 @@
                     </a>
                 </div>
                 <div class="col-md-3 fade-in" style="animation-delay: 0.4s">
-                    <a href="/sporteventultimate/profile" class="text-decoration-none">
+                    <a href="/profile" class="text-decoration-none">
                         <div class="quick-action-card card border-0 shadow-sm h-100">
                             <div class="card-body text-center p-4">
                                 <div class="icon-circle bg-success">
@@ -112,7 +112,7 @@
                     </a>
                 </div>
                 <div class="col-md-3 fade-in" style="animation-delay: 0.6s">
-                    <a href="/sporteventultimate/home" class="text-decoration-none">
+                    <a href="/home" class="text-decoration-none">
                         <div class="quick-action-card card border-0 shadow-sm h-100">
                             <div class="card-body text-center p-4">
                                 <div class="icon-circle bg-info">
@@ -124,7 +124,7 @@
                     </a>
                 </div>
                 <div class="col-md-3 fade-in" style="animation-delay: 0.8s">
-                    <a href="/sporteventultimate/profile#my-events" class="text-decoration-none">
+                    <a href="/profile#my-events" class="text-decoration-none">
                         <div class="quick-action-card card border-0 shadow-sm h-100">
                             <div class="card-body text-center p-4">
                                 <div class="icon-circle bg-warning">
@@ -176,11 +176,11 @@
                                 </div>
                                 <div class="text-end">
                                     {% if session.user_id is not defined %}
-                                        <a href="/sporteventultimate/connexion" class="btn btn-primary scale-hover">
+                                        <a href="/connexion" class="btn btn-primary scale-hover">
                                             <i class="fas fa-sign-in-alt me-1"></i>Participer
                                         </a>
                                     {% else %}
-                                        <a href="/sporteventultimate/event/{{ event.id }}" class="btn btn-outline-primary scale-hover">
+                                        <a href="/event/{{ event.id }}" class="btn btn-outline-primary scale-hover">
                                             <i class="fas fa-eye me-1"></i>Voir
                                         </a>
                                     {% endif %}
@@ -195,7 +195,7 @@
                 <i class="fas fa-info-circle me-2"></i>
                 Aucun événement à venir pour le moment.
                 {% if session.user_id is defined %}
-                    <a href="/sporteventultimate/event/create" class="alert-link">Créez le premier événement !</a>
+                    <a href="/event/create" class="alert-link">Créez le premier événement !</a>
                 {% endif %}
             </div>
         {% endif %}
@@ -207,10 +207,10 @@
             <div class="container text-center py-4 fade-in">
                 <h2 class="mb-4 text-shadow">Prêt à rejoindre la communauté ?</h2>
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="/sporteventultimate/inscription" class="btn btn-light btn-lg scale-hover">
+                    <a href="/inscription" class="btn btn-light btn-lg scale-hover">
                         <i class="fas fa-user-plus me-2"></i>S'inscrire maintenant
                     </a>
-                    <a href="/sporteventultimate/connexion" class="btn btn-outline-light btn-lg scale-hover">
+                    <a href="/connexion" class="btn btn-outline-light btn-lg scale-hover">
                         <i class="fas fa-sign-in-alt me-2"></i>Se connecter
                     </a>
                 </div>

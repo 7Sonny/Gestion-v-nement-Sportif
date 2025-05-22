@@ -79,9 +79,9 @@
                                             </td>
                                             <td class="text-end">
                                                 <div class="btn-group">
-                                                    <a href="/sporteventultimate/admin/edit-event/{{ event.id }}" 
-                                                       class="btn btn-warning btn-sm rounded-3 me-2">
-                                                        <i class="fas fa-edit me-2"></i>Modifier
+                                                    <a href="/admin/edit-event/{{ event.id }}" 
+                                                       class="btn btn-sm btn-warning me-2">
+                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                     <button class="btn btn-outline-danger btn-sm rounded-3" 
                                                             onclick="deleteEvent({{ event.id }})">
@@ -182,7 +182,7 @@
                                             <td>{{ inscription.created_at|date('d/m/Y H:i') }}</td>
                                             <td class="text-end">
                                                 <button class="btn btn-outline-danger btn-sm rounded-3" 
-                                                        onclick="removeParticipant({{ inscription.id }})">
+                                                        onclick="removeParticipant({{ inscription.event_id }}, {{ inscription.user_id }})">
                                                     <i class="fas fa-user-minus me-2"></i>Retirer
                                                 </button>
                                             </td>
@@ -207,6 +207,96 @@
         </div>
     </div>
 </div>
+
+<script>
+function confirmAction(message) {
+    return confirm(message);
+}
+
+async function deleteEvent(eventId) {
+    if (!confirmAction('Êtes-vous sûr de vouloir supprimer cet événement ?')) return;
+    
+    try {
+        const response = await fetch('/admin/delete-event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `event_id=${eventId}`
+        });
+        
+        const data = await response.json();
+        handleResponse(data, 'événement');
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+async function deleteComment(commentId) {
+    if (!confirmAction('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) return;
+    
+    try {
+        const response = await fetch('/admin/delete-comment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `comment_id=${commentId}`
+        });
+        
+        const data = await response.json();
+        handleResponse(data, 'commentaire');
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+async function removeParticipant(eventId, userId) {
+    if (!confirmAction('Êtes-vous sûr de vouloir retirer ce participant ?')) return;
+    
+    try {
+        const response = await fetch('/admin/remove-participant', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `event_id=${eventId}&user_id=${userId}`
+        });
+        
+        const data = await response.json();
+        handleResponse(data, 'participant');
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+function handleResponse(data, type) {
+    if (data.success) {
+        location.reload();
+    } else {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+        errorDiv.innerHTML = `
+            <i class="fas fa-exclamation-circle me-2"></i>
+            ${data.message || `Une erreur est survenue lors de la suppression du ${type}`}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.querySelector('.container-fluid').insertBefore(errorDiv, document.querySelector('.nav-tabs'));
+    }
+}
+
+function handleError(error) {
+    console.error('Erreur:', error);
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+    errorDiv.innerHTML = `
+        <i class="fas fa-exclamation-circle me-2"></i>
+        Une erreur est survenue lors de la communication avec le serveur
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    document.querySelector('.container-fluid').insertBefore(errorDiv, document.querySelector('.nav-tabs'));
+}
+</script>
 
 <style>
 .btn-group .btn {

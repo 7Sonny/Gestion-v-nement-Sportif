@@ -9,10 +9,10 @@
             <p class="lead mb-4">Découvrez et participez aux événements sportifs près de chez vous</p>
             {% if not session.user_id %}
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="/sporteventultimate/inscription" class="btn btn-light btn-lg rounded-pill px-5 shadow-sm">
+                    <a href="/inscription" class="btn btn-light btn-lg rounded-pill px-5 shadow-sm">
                         <i class="fas fa-user-plus me-2"></i>S'inscrire
                     </a>
-                    <a href="/sporteventultimate/connexion" class="btn btn-outline-light btn-lg rounded-pill px-5">
+                    <a href="/connexion" class="btn btn-outline-light btn-lg rounded-pill px-5">
                         <i class="fas fa-sign-in-alt me-2"></i>Se connecter
                     </a>
                 </div>
@@ -24,7 +24,7 @@
     <div class="row justify-content-center mb-5">
         <div class="col-md-8">
             <div class="bg-white p-4 rounded-4 shadow-sm">
-                <form action="/sporteventultimate/home" method="GET" class="mb-4">
+                <form action="/home" method="GET" class="mb-4">
                     <div class="input-group input-group-lg">
                         <input type="text" 
                                name="search" 
@@ -46,7 +46,7 @@
                                 Aucun résultat trouvé pour "{{ searchTerm }}"
                             {% endif %}
                         </p>
-                        <a href="/sporteventultimate/home" class="btn btn-outline-secondary btn-sm rounded-pill">
+                        <a href="/home" class="btn btn-outline-secondary btn-sm rounded-pill">
                             <i class="fas fa-times me-1"></i>Effacer la recherche
                         </a>
                     </div>
@@ -76,7 +76,7 @@
                                 <span class="text-primary">
                                     <i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}
                                 </span>
-                                <a href="/sporteventultimate/event/{{ event.id }}" class="btn btn-outline-primary rounded-pill">
+                                <a href="/event/{{ event.id }}" class="btn btn-outline-primary rounded-pill">
                                     <i class="fas fa-info-circle me-1"></i>Détails
                                 </a>
                             </div>
@@ -91,7 +91,7 @@
                     <h3 class="text-muted">Aucun événement disponible</h3>
                     <p class="text-muted">Revenez plus tard ou créez votre propre événement !</p>
                     {% if session.user_id %}
-                        <a href="/sporteventultimate/event/create" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                        <a href="/event/create" class="btn btn-primary rounded-pill px-4 shadow-sm">
                             <i class="fas fa-plus me-2"></i>Créer un événement
                         </a>
                     {% endif %}

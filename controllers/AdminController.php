@@ -37,7 +37,7 @@ class AdminController extends Controller {
                 exit;
             } else {
                 $_SESSION['error_message'] = "Accès non autorisé. Vous devez être administrateur pour accéder à cette page.";
-                header('Location: /sporteventultimate/home');
+                header('Location: /home');
                 exit;
             }
         }
@@ -73,7 +73,7 @@ class AdminController extends Controller {
         } catch (\Exception $e) {
             error_log("Erreur dans le tableau de bord admin : " . $e->getMessage());
             $_SESSION['error_message'] = "Une erreur est survenue lors du chargement du tableau de bord";
-            header('Location: /sporteventultimate/home');
+            header('Location: /home');
             exit;
         }
     }
@@ -149,7 +149,7 @@ class AdminController extends Controller {
 
         if (!$event_id) {
             $_SESSION['error_message'] = "ID d'événement manquant";
-            header('Location: /sporteventultimate/admin');
+            header('Location: /admin');
             exit;
         }
 
@@ -158,7 +158,7 @@ class AdminController extends Controller {
             
             if (!$event) {
                 $_SESSION['error_message'] = "Événement non trouvé";
-                header('Location: /sporteventultimate/admin');
+                header('Location: /admin');
                 exit;
             }
 
@@ -171,7 +171,7 @@ class AdminController extends Controller {
 
                 if (!$title || !$description || !$date_event || !$time_event || !$location) {
                     $_SESSION['error'] = "Tous les champs sont obligatoires";
-                    header('Location: /sporteventultimate/admin/edit-event/' . $event_id);
+                    header('Location: /admin/edit-event/' . $event_id);
                     exit;
                 }
 
@@ -185,14 +185,14 @@ class AdminController extends Controller {
                         $location
                     )) {
                         $_SESSION['success_message'] = "L'événement a été modifié avec succès";
-                        header('Location: /sporteventultimate/admin');
+                        header('Location: /admin');
                         exit;
                     } else {
                         throw new \Exception("Erreur lors de la modification de l'événement");
                     }
                 } catch (\Exception $e) {
                     $_SESSION['error'] = $e->getMessage();
-                    header('Location: /sporteventultimate/admin/edit-event/' . $event_id);
+                    header('Location: /admin/edit-event/' . $event_id);
                     exit;
                 }
             }
@@ -207,7 +207,7 @@ class AdminController extends Controller {
         } catch (\Exception $e) {
             error_log("Erreur lors de la modification de l'événement : " . $e->getMessage());
             $_SESSION['error_message'] = "Une erreur est survenue : " . $e->getMessage();
-            header('Location: /sporteventultimate/admin');
+            header('Location: /admin');
             exit;
         }
     }

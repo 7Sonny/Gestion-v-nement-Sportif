@@ -18,7 +18,7 @@
                         </div>
                     {% endif %}
 
-                    <form method="post" action="/sporteventultimate/inscription" class="needs-validation" novalidate>
+                    <form method="post" action="/inscription" class="needs-validation" novalidate>
                         <div class="row g-3">
                             <div class="col-12">
                                 <label for="pseudo" class="form-label">Pseudo</label>
@@ -74,7 +74,7 @@
 
                     <div class="text-center mt-4">
                         <p class="text-muted mb-0">Déjà inscrit ?</p>
-                        <a href="/sporteventultimate/connexion" class="text-primary text-decoration-none">
+                        <a href="/connexion" class="text-primary text-decoration-none">
                             <i class="fas fa-sign-in-alt me-1"></i>Se connecter
                         </a>
                     </div>
@@ -110,7 +110,37 @@
 </div>
 
 {% block javascript %}
-{{ parent() }}
+<script>
+// Validation des formulaires Bootstrap
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+
+    // Validation de la correspondance des mots de passe
+    var password = document.getElementById("password")
+    var confirm_password = document.getElementById("confirm_password")
+
+    function validatePassword(){
+        if(password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Les mots de passe ne correspondent pas")
+        } else {
+            confirm_password.setCustomValidity('')
+        }
+    }
+
+    password.onchange = validatePassword
+    confirm_password.onkeyup = validatePassword
+})()
+</script>
 {% endblock %}
 
 {% endblock %}

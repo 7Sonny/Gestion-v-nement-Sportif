@@ -46,7 +46,7 @@ class HomeController extends Controller
         if ($event) {
             $this->render('thisevent.html.twig', ['event' => $event]);
         } else {
-            header('Location: /sporteventultimate/home');
+            header('Location: /home');
             exit;
         }
     }

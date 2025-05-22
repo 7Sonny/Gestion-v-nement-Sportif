@@ -34,7 +34,7 @@ class CommentController {
         // Ajouter le commentaire en base de données
         if ($this->commentModel->addComment($event_id, $user_id, $content, $user_name)) {
             // Redirection propre vers la page de l'événement
-            header('Location: /sporteventultimate/event/' . $event_id);
+            header('Location: /event/' . $event_id);
             exit;
         } else {
             die("Erreur : Impossible d'ajouter le commentaire.");
@@ -47,7 +47,7 @@ class CommentController {
             $event_id = $_POST['event_id'];
 
             if ($this->commentModel->deleteComment($comment_id)) {
-                header('Location: /sporteventultimate/event/' . $event_id);
+                header('Location: /event/' . $event_id);
                 exit;
             } else {
                 die("Erreur lors de la suppression.");
