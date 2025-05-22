@@ -29,7 +29,7 @@ class EventModel {
     
             return true;
         } catch (PDOException $e) {
-            die("❌ Erreur lors de l'insertion de l'événement : " . $e->getMessage());
+            die("Erreur lors de l'insertion de l'événement : " . $e->getMessage());
         }
     }
     
@@ -78,7 +78,7 @@ class EventModel {
             $stmt = $this->db->prepare("DELETE FROM events WHERE id = :event_id AND user_id = :user_id");
             return $stmt->execute([':event_id' => $event_id, ':user_id' => $user_id]);
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (deleteEvent) : " . $e->getMessage());
+            die("Erreur SQL (deleteEvent) : " . $e->getMessage());
         }
     }
 
@@ -138,7 +138,7 @@ class EventModel {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (getUpcomingEvents) : " . $e->getMessage());
+            die("Erreur SQL (getUpcomingEvents) : " . $e->getMessage());
         }
     }
 
@@ -163,7 +163,7 @@ class EventModel {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (searchEventsByTitle) : " . $e->getMessage());
+            die("Erreur SQL (searchEventsByTitle) : " . $e->getMessage());
         }
     }
 

@@ -31,29 +31,30 @@ class UserController extends Controller {
 
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
+            $pseudo = htmlspecialchars($_POST['pseudo'] ?? '', ENT_QUOTES, 'UTF-8');
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $password = $_POST['password'] ?? '';
             $confirm_password = $_POST['confirm_password'] ?? '';
 
             if (!$pseudo || !$email || !$password || !$confirm_password) {
-                $_SESSION['error_message'] = "❌ Tous les champs sont obligatoires.";
+                $_SESSION['error_message'] = "Tous les champs sont obligatoires.";
             } elseif ($password !== $confirm_password) {
-                $_SESSION['error_message'] = "❌ Les mots de passe ne correspondent pas.";
+                $_SESSION['error_message'] = "Les mots de passe ne correspondent pas.";
             } else {
                 try {
-                    if ($this->userModel->createUser($pseudo, $email, $password)) {
-                        $_SESSION['success_message'] = "✅ Inscription réussie ! Vous pouvez maintenant vous connecter.";
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    if ($this->userModel->register($pseudo, $email, $hashedPassword)) {
+                        $_SESSION['success_message'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
                         header('Location: /sporteventultimate/connexion');
                         exit;
                     } else {
-                        $_SESSION['error_message'] = "❌ Erreur lors de l'inscription.";
+                        $_SESSION['error_message'] = "Erreur lors de l'inscription.";
                     }
                 } catch (\PDOException $e) {
                     if ($e->getCode() == 23000) {
-                        $_SESSION['error_message'] = "❌ Cet email ou ce pseudo est déjà utilisé.";
+                        $_SESSION['error_message'] = "Cet email ou ce pseudo est déjà utilisé.";
                     } else {
-                        $_SESSION['error_message'] = "❌ Une erreur est survenue lors de l'inscription.";
+                        $_SESSION['error_message'] = "Une erreur est survenue lors de l'inscription.";
                     }
                 }
             }
@@ -73,7 +74,7 @@ class UserController extends Controller {
             $password = $_POST['password'] ?? '';
 
             if (!$email || !$password) {
-                $_SESSION['error_message'] = "❌ Tous les champs sont obligatoires.";
+                $_SESSION['error_message'] = "Tous les champs sont obligatoires.";
             } else {
                 $user = $this->userModel->getUserByEmail($email);
                 if ($user && password_verify($password, $user->password)) {
@@ -84,11 +85,11 @@ class UserController extends Controller {
                         'email' => $user->email,
                         'role' => $user->role
                     ];
-                    $_SESSION['success_message'] = "✅ Connexion réussie !";
+                    $_SESSION['success_message'] = "Connexion réussie !";
                     header('Location: /sporteventultimate/home');
                     exit;
                 } else {
-                    $_SESSION['error_message'] = "❌ Email ou mot de passe incorrect.";
+                    $_SESSION['error_message'] = "Email ou mot de passe incorrect.";
                 }
             }
         }

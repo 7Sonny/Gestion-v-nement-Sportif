@@ -1,53 +1,77 @@
-# AltoRouter [![Build Status](https://api.travis-ci.org/dannyvankooten/AltoRouter.png)](http://travis-ci.org/dannyvankooten/AltoRouter) [![Latest Stable Version](https://poser.pugx.org/altorouter/altorouter/v/stable.svg)](https://packagist.org/packages/altorouter/altorouter) [![License](https://poser.pugx.org/altorouter/altorouter/license.svg)](https://packagist.org/packages/altorouter/altorouter) [![Code Climate](https://codeclimate.com/github/dannyvankooten/AltoRouter/badges/gpa.svg)](https://codeclimate.com/github/dannyvankooten/AltoRouter) [![Test Coverage](https://codeclimate.com/github/dannyvankooten/AltoRouter/badges/coverage.svg)](https://codeclimate.com/github/dannyvankooten/AltoRouter)
-AltoRouter is a small but powerful routing class for PHP 5.3+, heavily inspired by [klein.php](https://github.com/chriso/klein.php/).
+# Gestion d'Événements Sportifs
 
-```php
-$router = new AltoRouter();
+Une application web moderne pour la gestion et l'organisation d'événements sportifs, offrant une expérience utilisateur fluide et intuitive.
 
-// map homepage
-$router->map( 'GET', '/', function() {
-    require __DIR__ . '/views/home.php';
-});
+## 🚀 Fonctionnalités
 
-// map users details page
-$router->map( 'GET|POST', '/users/[i:id]/', function( $id ) {
-  $user = .....
-  require __DIR__ . '/views/user/details.php';
-});
+- Gestion complète des événements sportifs
+- Système d'inscription aux événements
+- Système de commentaires interactif
+- Gestion des utilisateurs et authentification
+- Interface moderne et responsive
+- Tableau de bord administrateur
+
+## 🛠 Technologies Utilisées
+
+- PHP 8.2.4
+- MariaDB 10.4.28
+- Composer pour la gestion des dépendances
+- AltoRouter pour le routing
+- Twig 3.18 pour le templating
+- Bootstrap pour l'interface utilisateur
+
+## 📋 Prérequis
+
+- PHP >= 8.2
+- MySQL/MariaDB
+- XAMPP ou environnement similaire
+- Composer
+
+## 🔧 Installation
+
+1. Clonez le dépôt :
+```bash
+git clone [https://github.com/7Sonny/Gestion-v-nement-Sportif.git]
+cd sporteventultimate
 ```
 
-## Features
+2. Installez les dépendances :
+```bash
+composer install
+```
 
-* Can be used with all HTTP Methods
-* Dynamic routing with named route parameters
-* Reversed routing
-* Flexible regular expression routing (inspired by [Sinatra](http://www.sinatrarb.com/))
-* Custom regexes
+3. Configuration de la base de données :
+- Créez une base de données nommée 'sportevent'
+- Importez le fichier `database/base.sql`
+- Vérifiez que les paramètres de connexion sont corrects
 
-## Getting started
+## 🎨 Design et Interface
 
-You need PHP >= 5.3 to use AltoRouter.
+L'application utilise un design moderne avec :
+- Sections principales avec fond coloré et coins arrondis (bg-primary, rounded-4)
+- Cartes interactives avec effets de survol élégants
+- Boutons stylisés (rounded-pill) et formulaires modernes
+- Transitions fluides (0.3s ease) pour une meilleure expérience utilisateur
+- Design entièrement responsive
 
-- [Install AltoRouter](http://altorouter.com/usage/install.html)
-- [Rewrite all requests to AltoRouter](http://altorouter.com/usage/rewrite-requests.html)
-- [Map your routes](http://altorouter.com/usage/mapping-routes.html)
-- [Match requests](http://altorouter.com/usage/matching-requests.html)
-- [Process the request your preferred way](http://altorouter.com/usage/processing-requests.html)
+## 🔄 Architecture MVC
 
-## Contributors
-- [Danny van Kooten](https://github.com/dannyvankooten)
-- [Koen Punt](https://github.com/koenpunt)
-- [John Long](https://github.com/adduc)
-- [Niahoo Osef](https://github.com/niahoo)
+```
+sporteventultimate/
+├── controllers/     # Contrôleurs de l'application
+├── models/         # Modèles de données
+├── views/          # Templates Twig
+├── database/       # Scripts SQL et configuration
+├── middlewares/    # Middlewares d'authentification
+├── public/         # Assets publics (CSS, JS, images)
+└── vendor/         # Dépendances Composer
+```
 
-## License
+## 👥 Contribution
 
-(MIT License)
-
-Copyright (c) 2012-2015 Danny van Kooten <hi@dannyvankooten.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Pour contribuer au projet :
+1. Forkez le projet
+2. Créez une nouvelle branche (`git checkout -b feature/AmazingFeature`)
+3. Committez vos changements
+4. Poussez vers la branche
+5. Ouvrez une Pull Request

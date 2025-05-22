@@ -37,7 +37,7 @@ class UserModel {
             $stmt->execute([':email' => $email]);
             return (bool) $stmt->fetchColumn();
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (emailExists) : " . $e->getMessage());
+            die("Erreur SQL (emailExists) : " . $e->getMessage());
         }
     }
 
@@ -45,37 +45,38 @@ class UserModel {
         try {
             $stmt = $this->db->prepare("SELECT * FROM users WHERE email = :email");
             $stmt->execute([':email' => $email]);
-            return $stmt->fetch(PDO::FETCH_OBJ); // ✅ Retourne un objet au lieu d'un tableau
+            return $stmt->fetch(PDO::FETCH_OBJ); // Retourne un objet au lieu d'un tableau
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (getUserByEmail) : " . $e->getMessage());
+            die("Erreur SQL (getUserByEmail) : " . $e->getMessage());
         }
     }
     
     
 
     // Inscription d'un utilisateur
-    public function register(string $pseudo, string $email, string $password): ?int {
+    public function register(string $pseudo, string $email, string $password): bool {
         try {
-            echo "🔍 Tentative d'insertion en base de données...<br>";
-    
-            $stmt = $this->db->prepare("INSERT INTO users (pseudo, email, password) VALUES (:pseudo, :email, :password)");
-            $stmt->execute([
+            // Vérifier si l'email existe déjà
+            if ($this->emailExists($email)) {
+                return false;
+            }
+
+            $stmt = $this->db->prepare("
+                INSERT INTO users (pseudo, email, password, role, created_at) 
+                VALUES (:pseudo, :email, :password, 'user', NOW())
+            ");
+
+            $success = $stmt->execute([
                 ':pseudo' => $pseudo,
                 ':email' => $email,
                 ':password' => $password
             ]);
-    
-            $userId = (int) $this->db->lastInsertId();
-    
-            if ($userId) {
-                echo "✅ Utilisateur inséré avec succès, ID: " . $userId . "<br>";
-            } else {
-                echo "❌ Erreur : Aucune insertion en base.<br>";
-            }
-    
-            return $userId;
+
+            return $success && $this->db->lastInsertId() > 0;
+
         } catch (PDOException $e) {
-            die("❌ Erreur SQL : " . $e->getMessage());
+            error_log("Erreur lors de l'inscription : " . $e->getMessage());
+            throw $e;
         }
     }
     
@@ -91,10 +92,10 @@ class UserModel {
             if ($user && password_verify($password, $user->password)) {
                 return $user->id;
             } else {
-                die("❌ Erreur : Identifiants incorrects.");
+                die("Erreur : Identifiants incorrects.");
             }
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (login) : " . $e->getMessage());
+            die("Erreur SQL (login) : " . $e->getMessage());
         }
     }
 
@@ -105,7 +106,7 @@ class UserModel {
             $stmt->execute([':id' => $id]);
             return $stmt->fetch(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (getUserById) : " . $e->getMessage());
+            die("Erreur SQL (getUserById) : " . $e->getMessage());
         }
     }
 
@@ -120,7 +121,7 @@ class UserModel {
             $stmt->execute([':userId' => $userId]);
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (getEventsCreatedByUser) : " . $e->getMessage());
+            die("Erreur SQL (getEventsCreatedByUser) : " . $e->getMessage());
         }
     }
 
@@ -136,7 +137,7 @@ class UserModel {
             $stmt->execute([':userId' => $userId]);
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (getEventsParticipatingByUser) : " . $e->getMessage());
+            die("Erreur SQL (getEventsParticipatingByUser) : " . $e->getMessage());
         }
     }
 

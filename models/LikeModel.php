@@ -10,34 +10,50 @@ class LikeModel {
         $this->db = $db;
     }
 
-    public function toggleLike($event_id, $user_id) {
-        // Vérifie si l'utilisateur a déjà liké
-        $stmt = $this->db->prepare("SELECT id FROM likes WHERE event_id = ? AND user_id = ?");
-        $stmt->execute([$event_id, $user_id]);
-        $existing = $stmt->fetch();
+    public function addLike($event_id, $user_id) {
+        try {
+            $stmt = $this->db->prepare("INSERT INTO likes (event_id, user_id) VALUES (:event_id, :user_id)");
+            return $stmt->execute([
+                ':event_id' => $event_id,
+                ':user_id' => $user_id
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
-        if ($existing) {
-            // Supprime le like
-            $stmt = $this->db->prepare("DELETE FROM likes WHERE event_id = ? AND user_id = ?");
-            $stmt->execute([$event_id, $user_id]);
-            return ['action' => 'removed'];
-        } else {
-            // Ajoute le like
-            $stmt = $this->db->prepare("INSERT INTO likes (event_id, user_id) VALUES (?, ?)");
-            $stmt->execute([$event_id, $user_id]);
-            return ['action' => 'added'];
+    public function removeLike($event_id, $user_id) {
+        try {
+            $stmt = $this->db->prepare("DELETE FROM likes WHERE event_id = :event_id AND user_id = :user_id");
+            return $stmt->execute([
+                ':event_id' => $event_id,
+                ':user_id' => $user_id
+            ]);
+        } catch (PDOException $e) {
+            return false;
         }
     }
 
     public function getLikeCount($event_id) {
-        $stmt = $this->db->prepare("SELECT COUNT(*) FROM likes WHERE event_id = ?");
-        $stmt->execute([$event_id]);
-        return $stmt->fetchColumn();
+        try {
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM likes WHERE event_id = :event_id");
+            $stmt->execute([':event_id' => $event_id]);
+            return (int) $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            return 0;
+        }
     }
 
     public function hasUserLiked($event_id, $user_id) {
-        $stmt = $this->db->prepare("SELECT COUNT(*) FROM likes WHERE event_id = ? AND user_id = ?");
-        $stmt->execute([$event_id, $user_id]);
-        return $stmt->fetchColumn() > 0;
+        try {
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM likes WHERE event_id = :event_id AND user_id = :user_id");
+            $stmt->execute([
+                ':event_id' => $event_id,
+                ':user_id' => $user_id
+            ]);
+            return (bool) $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 }

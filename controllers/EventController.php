@@ -33,22 +33,20 @@ class EventController extends Controller
             $user_id = $_SESSION['user_id'] ?? null;
     
             if (!$title || !$description || !$date_event || !$time_event || !$location || !$user_id) {
-                die("❌ Tous les champs sont obligatoires !");
+                die("Tous les champs sont obligatoires !");
             }
     
             $eventModel = new EventModel($this->db);
             $success = $eventModel->createEvent($title, $description, $date_event, $time_event, $location, $user_id);
     
             if ($success) {
-                // 🔄 **Redirection correcte**
                 header("Location: /sporteventultimate/home");
                 exit;
             } else {
-                die("❌ Erreur lors de la création de l'événement.");
+                die("Erreur lors de la création de l'événement.");
             }
         }
     
-        // ✅ Si c'est une requête GET, affiche le formulaire de création d'événement
         $this->render("event.html.twig");
     }
     
@@ -57,9 +55,8 @@ class EventController extends Controller
 
 
 
-    // Modifier un événement
     public function updateEvent() {
-        echo "✅ Fonction updateEvent() appelée !<br>";
+        echo "Fonction updateEvent() appelée !<br>";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $event_id = $_POST['event_id'] ?? 0;
             $title = $_POST['title'] ?? '';
@@ -69,61 +66,54 @@ class EventController extends Controller
             $user_id = $_SESSION['user_id'] ?? 0;
 
             if (empty($event_id) || empty($title) || empty($description) || empty($date_event) || empty($location)) {
-                die("❌ Erreur : Tous les champs doivent être remplis.");
+                die("Erreur : Tous les champs doivent être remplis.");
             }
 
             if ($this->eventModel->updateEvent($event_id, $title, $description, $date_event, $location, $user_id)) {
-                echo "✅ Événement mis à jour avec succès.<br>";
+                echo "Événement mis à jour avec succès.<br>";
             } else {
-                die("❌ Erreur lors de la mise à jour de l'événement.");
+                die("Erreur lors de la mise à jour de l'événement.");
             }
         }
     }
 
-    // Supprimer un événement
     public function deleteEvent() {
-        echo "✅ Fonction deleteEvent() appelée !<br>";
+        echo "Fonction deleteEvent() appelée !<br>";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $event_id = $_POST['event_id'] ?? 0;
             $user_id = $_SESSION['user_id'] ?? 0;
 
             if (empty($event_id)) {
-                die("❌ Erreur : L'ID de l'événement est requis.");
+                die("Erreur : L'ID de l'événement est requis.");
             }
 
             if ($this->eventModel->deleteEvent($event_id, $user_id)) {
-                echo "✅ Événement supprimé avec succès.<br>";
+                echo "Événement supprimé avec succès.<br>";
             } else {
-                die("❌ Erreur lors de la suppression de l'événement.");
+                die("Erreur lors de la suppression de l'événement.");
             }
         }
     }
 
-    // Afficher un événement
     public function showEvent($id)
     {
         $event = $this->eventModel->getEventById($id);
         if (!$event) {
-            echo "❌ Événement introuvable.";
+            echo "Événement introuvable.";
             return;
         }
 
-        // Récupérer les commentaires associés
         $comments = $this->commentModel->getCommentsForEvent($id);
         
-        // Récupérer le nombre de likes
         $likes = $this->likeModel->getLikeCount($id);
 
-        // Vérifier si l'utilisateur courant a liké l'événement
         $is_liked = false;
         if (isset($_SESSION['user_id'])) {
             $is_liked = $this->likeModel->hasUserLiked($id, $_SESSION['user_id']);
         }
 
-        // Récupérer la liste des inscrits
         $inscriptions = $this->inscriptionModel->getInscriptions($id);
 
-        // Vérifier si l'utilisateur est inscrit
         $is_registered = false;
         if (isset($_SESSION['user_id'])) {
             $is_registered = $this->inscriptionModel->isUserRegistered($id, $_SESSION['user_id']);
@@ -142,12 +132,12 @@ class EventController extends Controller
     public function toggleInscription() {
         if (!isset($_SESSION['user_id'])) {
             header('Content-Type: application/json');
-            die(json_encode(['success' => false, 'message' => '❌ Erreur : Utilisateur non connecté']));
+            die(json_encode(['success' => false, 'message' => 'Erreur : Utilisateur non connecté']));
         }
 
         if (empty($_POST['event_id'])) {
             header('Content-Type: application/json');
-            die(json_encode(['success' => false, 'message' => '❌ Erreur : ID de l\'événement manquant']));
+            die(json_encode(['success' => false, 'message' => 'Erreur : ID de l\'événement manquant']));
         }
 
         $event_id = (int) $_POST['event_id'];
@@ -177,21 +167,19 @@ class EventController extends Controller
         }
     }
 
-    // Redirige vers l'événement après ajout
     header("Location: /event/$event_id");
     exit();
 }
 
     
 
-    // Lister tous les événements
     public function listEvents() {
         $events = $this->eventModel->getAllEvents();
         if (!empty($events)) {
-            echo "✅ Liste des événements : ";
+            echo "Liste des événements : ";
             print_r($events);
         } else {
-            die("❌ Aucun événement trouvé.");
+            die("Aucun événement trouvé.");
         }
     }
 }

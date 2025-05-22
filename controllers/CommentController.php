@@ -13,54 +13,47 @@ class CommentController {
 
     public function addComment() {
 
-       
-
         if (!isset($_SESSION['user_id'])) {
-            die("❌ Erreur : Utilisateur non connecté.");
+            die("Erreur : Utilisateur non connecté.");
         }
 
-        if (empty($_POST['content']) || empty($_POST['event_id'])) {
-            die("❌ Erreur : Tous les champs doivent être remplis.");
+        $content = $_POST['content'] ?? '';
+        if (empty($content)) {
+            die("Erreur : Tous les champs doivent être remplis.");
         }
 
-        $event_id = (int) $_POST['event_id'];
-        $content = trim($_POST['content']);
-        $user_id = (int) $_SESSION['user_id'];
+        $event_id = $_POST['event_id'] ?? null;
+        $user_id = $_SESSION['user_id'];
 
-        // ✅ Vérifier et récupérer le pseudo de l'utilisateur
-        if (!isset($_SESSION['pseudo'])) {
-            $_SESSION['pseudo'] = $this->commentModel->getUserPseudo($user_id);
+        // Vérifier et récupérer le pseudo de l'utilisateur
+        $user_name = $this->commentModel->getUserPseudo($user_id);
+        if (!$user_name) {
+            $user_name = "Utilisateur";  // Valeur par défaut
         }
 
-        $user_name = $_SESSION['pseudo']; // Récupération du pseudo stocké en session
-
-        // ✅ Ajouter le commentaire en base de données
-        $comment_id = $this->commentModel->addComment($event_id, $user_id, $user_name, $content);
-
-        if ($comment_id) {
-            // ✅ Redirection propre vers la page de l'événement
-            header("Location: /sporteventultimate/event/$event_id");
+        // Ajouter le commentaire en base de données
+        if ($this->commentModel->addComment($event_id, $user_id, $content, $user_name)) {
+            // Redirection propre vers la page de l'événement
+            header('Location: /sporteventultimate/event/' . $event_id);
             exit;
         } else {
-            die("❌ Erreur : Impossible d'ajouter le commentaire.");
+            die("Erreur : Impossible d'ajouter le commentaire.");
         }
     }
 
     public function deleteComment() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $comment_id = $_POST['comment_id'] ?? null;
-            $user_id = $_SESSION['user_id'] ?? null;
+        if (isset($_POST['comment_id']) && isset($_POST['event_id'])) {
+            $comment_id = $_POST['comment_id'];
+            $event_id = $_POST['event_id'];
 
-            if (!$comment_id || !$user_id) {
-                die("❌ Erreur : Informations manquantes.");
-            }
-
-            if ($this->commentModel->deleteComment($comment_id, $user_id)) {
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+            if ($this->commentModel->deleteComment($comment_id)) {
+                header('Location: /sporteventultimate/event/' . $event_id);
                 exit;
             } else {
-                die("❌ Erreur lors de la suppression.");
+                die("Erreur lors de la suppression.");
             }
+        } else {
+            die("Erreur : Informations manquantes.");
         }
     }
 

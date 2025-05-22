@@ -11,7 +11,7 @@ class CommentModel {
         $this->db = $db;
     }
 
-    // ✅ Récupérer le pseudo d'un utilisateur à partir de son ID
+    // Récupérer le pseudo d'un utilisateur à partir de son ID
     public function getUserPseudo(int $user_id): string {
         try {
             $stmt = $this->db->prepare("SELECT pseudo FROM users WHERE id = :user_id");
@@ -19,30 +19,32 @@ class CommentModel {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             return $user['pseudo'] ?? 'Utilisateur inconnu';
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (getUserPseudo) : " . $e->getMessage());
+            die("Erreur SQL (getUserPseudo) : " . $e->getMessage());
         }
     }
 
-    // ✅ Ajouter un commentaire avec pseudo récupéré
-    public function addComment(int $event_id, int $user_id, string $user_name, string $content): int {
+    // Ajouter un commentaire avec pseudo récupéré
+    public function addComment(int $event_id, int $user_id, string $content, string $user_name): int {
         try {
-            $stmt = $this->db->prepare("INSERT INTO comments (event_id, user_id, user_name, content, created_at) 
-                                        VALUES (:event_id, :user_id, :user_name, :content, NOW())");
+            $stmt = $this->db->prepare("
+                INSERT INTO comments (event_id, user_id, content, user_name, created_at) 
+                VALUES (:event_id, :user_id, :content, :user_name, NOW())
+            ");
 
             $stmt->execute([
-                ':event_id'  => $event_id,
-                ':user_id'   => $user_id,
-                ':user_name' => $user_name,
-                ':content'   => $content
+                ':event_id' => $event_id,
+                ':user_id' => $user_id,
+                ':content' => $content,
+                ':user_name' => $user_name
             ]);
 
             return (int) $this->db->lastInsertId();
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (addComment) : " . $e->getMessage());
+            die("Erreur SQL (addComment) : " . $e->getMessage());
         }
     }
 
-    // ✅ Supprimer un commentaire
+    // Supprimer un commentaire
     public function deleteComment(int $comment_id): bool {
         try {
             $this->db->beginTransaction();
@@ -98,19 +100,21 @@ class CommentModel {
         }
     }
 
-    // ✅ Récupérer tous les commentaires d'un événement
+    // Récupérer tous les commentaires d'un événement
     public function getCommentsForEvent(int $event_id): array {
         try {
             $stmt = $this->db->prepare("
-                SELECT user_name, content, created_at 
-                FROM comments 
-                WHERE event_id = :event_id 
-                ORDER BY created_at DESC");
+                SELECT c.*, u.pseudo as user_name 
+                FROM comments c
+                LEFT JOIN users u ON c.user_id = u.id
+                WHERE c.event_id = :event_id 
+                ORDER BY c.created_at DESC
+            ");
             
             $stmt->execute([':event_id' => $event_id]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            die("❌ Erreur SQL (getCommentsForEvent) : " . $e->getMessage());
+            die("Erreur SQL (getCommentsForEvent) : " . $e->getMessage());
         }
     }
 

@@ -3,6 +3,7 @@ namespace Controllers;
 
 use PDO;
 use Models\LikeModel;
+use Exception;
 
 class LikeController {
     private LikeModel $likeModel;
@@ -13,30 +14,43 @@ class LikeController {
 
     public function toggleLike() {
         if (!isset($_SESSION['user_id'])) {
-            die("❌ Erreur : Utilisateur non connecté.");
+            die("Erreur : Utilisateur non connecté.");
         }
 
         if (empty($_POST['event_id'])) {
-            die("❌ Erreur : ID de l'événement manquant.");
+            die("Erreur : ID de l'événement manquant.");
         }
 
         $event_id = (int) $_POST['event_id'];
         $user_id = (int) $_SESSION['user_id'];
 
-        // Toggle le like (ajoute si n'existe pas, supprime si existe)
-        $result = $this->likeModel->toggleLike($event_id, $user_id);
-        
-        // Récupère le nouveau nombre de likes
-        $likeCount = $this->likeModel->getLikeCount($event_id);
-        
-        // Retourne le résultat en JSON
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => true,
-            'liked' => $result['action'] === 'added',
-            'likeCount' => $likeCount
-        ]);
-        exit;
+        try {
+            $hasLiked = $this->likeModel->hasUserLiked($event_id, $user_id);
+            
+            if ($hasLiked) {
+                $success = $this->likeModel->removeLike($event_id, $user_id);
+            } else {
+                $success = $this->likeModel->addLike($event_id, $user_id);
+            }
+
+            if ($success) {
+                $newLikeCount = $this->likeModel->getLikeCount($event_id);
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => true,
+                    'liked' => !$hasLiked,
+                    'likeCount' => $newLikeCount
+                ]);
+            } else {
+                throw new Exception("Erreur lors de la mise à jour du like");
+            }
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function getLikeStatus($event_id) {

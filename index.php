@@ -10,8 +10,6 @@ use Controllers\CommentController;
 use Controllers\LikeController;
 use Controllers\AdminController;
 
-session_start();
-
 // Activer l'affichage des erreurs
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -21,8 +19,10 @@ error_reporting(E_ALL);
 try {
     $db = Database::getInstance();
 } catch (Exception $e) {
-    die("❌ Erreur de connexion : " . $e->getMessage());
+    die("Erreur de connexion : " . $e->getMessage());
 }
+
+session_start();
 
 // Création des contrôleurs
 $userController = new UserController($db);
