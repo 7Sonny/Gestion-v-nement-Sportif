@@ -59,7 +59,7 @@ Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou so
 
 ## Lien serveur 
 
-Lien d'accès à l'application sur serveur : https://sonny.fmdevformation.com dd
+Lien d'accès à l'application sur serveur : https://sonny.fmdevformation.com 
 
 ## License
 
