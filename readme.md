@@ -57,6 +57,9 @@ sporteventultimate/
 
 Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou soumettre une pull request.
 
+## Lien serveur 
+Lien pour acceder à l'application serveur : https://sonny.fmdevformation.com
+
 ## License
 
 Ce projet est sous licence MIT. Vous êtes libre de l'utiliser et de le modifier selon vos besoins.
